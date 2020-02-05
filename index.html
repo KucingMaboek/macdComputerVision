@@ -56,7 +56,6 @@
  
         .done(function(data) {
             // Show formatted JSON on webpage.
-            console.log(data.description.captions[0].text);
             $("#responseTextArea").val(JSON.stringify(data, null, 2));
             document.getElementById("imageCaptions").innerHTML = data.description.captions[0].text;
         })
@@ -80,7 +79,7 @@ Image to analyze:
     value="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg" />
 <button onclick="processImage()">Analyze image</button>
 <br><br>
-<div id="wrapper" style="width:1020px; display:table;">
+<!-- <div id="wrapper" style="width:1020px; display:table;">
     <div id="jsonOutput" style="width:600px; display:table-cell;">
         Response:
         <br><br>
@@ -92,7 +91,7 @@ Image to analyze:
         <br><br>
         <img id="sourceImage" width="400" />
     </div>
-</div>
+</div> -->
 <div id="textOutput">
     <p id="imageCaptions"></p>
 </div>
