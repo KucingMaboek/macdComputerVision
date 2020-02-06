@@ -12,9 +12,9 @@
     Image to analyze:
     <input type="text" name="inputImage" id="inputImage"
         value="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg" />
-    <button onclick="analyzeImage()">Analyze image</button>
     <button id="select-button">Upload</button>
-    <input type="file" id="file-input" multiple style="display: none;" />
+    <input type="file" id="file-input" style="display: none;" />
+    <button onclick="analyzeImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">
         <div id="imageDiv" style="width:420px; display:table-cell;">
@@ -24,6 +24,7 @@
         </div>
     </div>
     <div id="textOutput">
+        <caption>Caption:</caption>
         <p id="imageCaptions"></p>
     </div>
 </body>
