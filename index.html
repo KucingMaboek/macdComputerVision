@@ -7,9 +7,12 @@
 <body>
 
     <h1>Analyze image:</h1>
-    Enter the URL to an image, then click the <strong>Analyze image</strong> button.
+    Enter the URL to an image or upload an image from your local files, then click the <strong>Analyze image</strong> button
     <br><br>
     Image to analyze:
+    <input type="text" name="inputImage" id="inputImage"
+        value="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg" />
+    <button onclick="analyzeImage()">Analyze image</button>
     <button id="select-button">Upload</button>
     <input type="file" id="file-input" multiple style="display: none;" />
     <br><br>

@@ -23,12 +23,12 @@ const uploadFiles = async () => {
         const promises = [];
         for (const file of fileInput.files) {
             const blockBlobURL = azblob.BlockBlobURL.fromContainerURL(containerURL, file.name);
-            url = blockBlobURL.url.split("?");
-            analyzeImage(url[0]);
-            console.log(url[0]);
+            url = blockBlobURL.url.split("?")[0];
+            // analyzeImage(url);
+            document.querySelector("#inputImage").value = url;
+            console.log(url);
             promises.push(azblob.uploadBrowserDataToBlockBlob(
                 azblob.Aborter.none, file, blockBlobURL));
-            document.querySelector("#sourceImage").src = url[0];    
         }
         await Promise.all(promises);
         reportStatus("Done.");
@@ -42,7 +42,7 @@ selectButton.addEventListener("click", () => fileInput.click());
 fileInput.addEventListener("change", uploadFiles);
 
 
-function analyzeImage(imageUrl) {
+function analyzeImage() {
     var subscriptionKey = "403014431ee447f9a86e48a044d24e76";
     var uriBase =
         "https://southeastasia.api.cognitive.microsoft.com/vision/v2.0/analyze";
@@ -53,6 +53,10 @@ function analyzeImage(imageUrl) {
         "details": "",
         "language": "en",
     };
+
+    // Display the image.
+    var sourceImageUrl = document.getElementById("inputImage").value;
+    document.querySelector("#sourceImage").src = sourceImageUrl;
 
     // Make the REST API call.
     $.ajax({
@@ -68,7 +72,7 @@ function analyzeImage(imageUrl) {
         type: "POST",
 
         // Request body.
-        data: '{"url": ' + '"' + imageUrl + '"}',
+        data: '{"url": ' + '"' + sourceImageUrl + '"}',
     })
 
     .done(function(data) {
