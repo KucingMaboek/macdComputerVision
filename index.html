@@ -5,14 +5,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 </head>
 <body>
-    <script src="js/computervision.js"></script>
+
     <h1>Analyze image:</h1>
     Enter the URL to an image, then click the <strong>Analyze image</strong> button.
     <br><br>
     Image to analyze:
-    <input type="text" name="inputImage" id="inputImage"
-        value="https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg" />
-    <button onclick="processImage()">Analyze image</button>
+    <button id="select-button">Upload</button>
+    <input type="file" id="file-input" multiple style="display: none;" />
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">
         <div id="imageDiv" style="width:420px; display:table-cell;">
@@ -25,4 +24,6 @@
         <p id="imageCaptions"></p>
     </div>
 </body>
+<script src="js/azure-storage-blob.js" charset="utf-8"></script>
+<script src="js/computervision.js"></script>
 </html>

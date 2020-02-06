@@ -1,19 +1,49 @@
-function processImage() {
-    // **********************************************
-    // *** Update or verify the following values. ***
-    // **********************************************
+//Set Up
+const selectButton = document.getElementById("select-button");
+const fileInput = document.getElementById("file-input");
 
-    // Replace <Subscription Key> with your valid subscription key.
+const reportStatus = message => {
+    status.innerHTML += `${message}<br/>`;
+    status.scrollTop = status.scrollHeight;
+}
+
+//Account info
+const accountName = "macdwebapps";
+const sasString = 
+    "se=2025-02-25&sp=rwdlac&sv=2018-03-28&ss=b&srt=sco&sig=oiQNO6gvEbVU5AosVGgf6a5zQPGWUHFyp4%2BUlO6PiqU%3D";
+const containerName = "computervisionblob";
+const containerURL = new azblob.ContainerURL(
+    `https://${accountName}.blob.core.windows.net/${containerName}?${sasString}`,
+    azblob.StorageURL.newPipeline(new azblob.AnonymousCredential));
+
+//Upload blobs
+const uploadFiles = async () => {
+    try {
+        reportStatus("Uploading files...");
+        const promises = [];
+        for (const file of fileInput.files) {
+            const blockBlobURL = azblob.BlockBlobURL.fromContainerURL(containerURL, file.name);
+            url = blockBlobURL.url.split("?");
+            analyzeImage(url[0]);
+            console.log(url[0]);
+            promises.push(azblob.uploadBrowserDataToBlockBlob(
+                azblob.Aborter.none, file, blockBlobURL));
+            document.querySelector("#sourceImage").src = url[0];    
+        }
+        await Promise.all(promises);
+        reportStatus("Done.");
+    } catch (error) {
+        console.log(error);
+        reportStatus(error.body.message);
+    }
+}
+
+selectButton.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", uploadFiles);
+
+
+function analyzeImage(imageUrl) {
     var subscriptionKey = "403014431ee447f9a86e48a044d24e76";
-
-    // You must use the same Azure region in your REST API method as you used to
-    // get your subscription keys. For example, if you got your subscription keys
-    // from the West US region, replace "westcentralus" in the URL
-    // below with "westus".
-    //
-    // Free trial subscription keys are generated in the "westus" region.
-    // If you use a free trial subscription key, you shouldn't need to change
-    // this region.
     var uriBase =
         "https://southeastasia.api.cognitive.microsoft.com/vision/v2.0/analyze";
 
@@ -23,10 +53,6 @@ function processImage() {
         "details": "",
         "language": "en",
     };
-
-    // Display the image.
-    var sourceImageUrl = document.getElementById("inputImage").value;
-    document.querySelector("#sourceImage").src = sourceImageUrl;
 
     // Make the REST API call.
     $.ajax({
@@ -42,12 +68,11 @@ function processImage() {
         type: "POST",
 
         // Request body.
-        data: '{"url": ' + '"' + sourceImageUrl + '"}',
+        data: '{"url": ' + '"' + imageUrl + '"}',
     })
 
     .done(function(data) {
-        // Show formatted JSON on webpage.
-        // $("#responseTextArea").val(JSON.stringify(data, null, 2));
+        // Show captions on webpage.
         document.getElementById("imageCaptions").innerHTML = data.description.captions[0].text;
     })
 
